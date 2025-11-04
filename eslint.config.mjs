@@ -1,4 +1,5 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
+
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
 import prettier from 'eslint-config-prettier/flat';
@@ -14,16 +15,24 @@ const eslintConfig = defineConfig([
       'no-console': 'warn',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      rules: {
-        'import/order': [
-          'warn',
-          {
-            groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index'],
-            'newlines-between': 'always',
-            alphabetize: { order: 'asc', caseInsensitive: true },
-          },
-        ],
-      },
+      'import/order': [
+        'warn',
+        {
+          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index'], 'object'],
+          pathGroups: [
+            { pattern: 'eslint/config', group: 'builtin', position: 'before' },
+            { pattern: '^react$', group: 'external', position: 'before' },
+            { pattern: '^(next|next/.*)$', group: 'external', position: 'after' },
+            { pattern: '@/**', group: 'internal', position: 'after' },
+            { pattern: '**/*.css', group: 'index', position: 'after' },
+          ],
+          pathGroupsExcludedImportTypes: [],
+          'newlines-between': 'always',
+          alphabetize: { order: 'asc', caseInsensitive: true },
+        },
+      ],
+
+      'import/newline-after-import': ['warn', { count: 1 }],
     },
   },
   // Override default ignores of eslint-config-next.
