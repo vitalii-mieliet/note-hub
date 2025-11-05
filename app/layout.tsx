@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 
-import Footer from '@/components/Footer/Footer';
-import Header from '@/components/Header/Header';
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import Footer from '@/components/common/Footer/Footer';
+import Header from '@/components/common/Header/Header';
 
 import './globals.css';
 
@@ -27,9 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.variable} `}>
-        <Header />
-        {children}
-        <Footer />
+        <TanStackProvider>
+          {' '}
+          <Header />
+          {children}
+          <Footer />
+        </TanStackProvider>
       </body>
     </html>
   );
