@@ -12,15 +12,22 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.6",
+    "axios": "^1.13.2",
     "next": "16.0.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "react-hook-form": "^7.66.0",
+    "react-paginate": "^8.3.0",
+    "use-debounce": "^10.0.6",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-paginate": "^7.1.4",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
