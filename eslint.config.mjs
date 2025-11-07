@@ -12,27 +12,23 @@ const eslintConfig = defineConfig([
   {
     plugins: { import: importPlugin },
     rules: {
-      'no-console': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      'import/order': [
+      '@typescript-eslint/no-unused-vars': [
         'warn',
         {
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index'], 'object'],
-          pathGroups: [
-            { pattern: 'eslint/config', group: 'builtin', position: 'before' },
-            { pattern: '^react$', group: 'external', position: 'before' },
-            { pattern: '^(next|next/.*)$', group: 'external', position: 'after' },
-            { pattern: '@/**', group: 'internal', position: 'after' },
-            { pattern: '**/*.css', group: 'index', position: 'after' },
-          ],
-          pathGroupsExcludedImportTypes: [],
-          'newlines-between': 'always',
-          alphabetize: { order: 'asc', caseInsensitive: true },
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
         },
       ],
-
-      'import/newline-after-import': ['warn', { count: 1 }],
+      'import/order': 'off',
+      'import/newline-after-import': 'off',
+      'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
+      'prefer-arrow-callback': 'error',
     },
   },
   // Override default ignores of eslint-config-next.
