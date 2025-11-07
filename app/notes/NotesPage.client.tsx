@@ -6,7 +6,9 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import Pagination from '@/components/common/Pagination/Pagination';
 import SearchBox from '@/components/common/SearchBox/SearchBox';
+import NoteForm from '@/components/features/NoteForm/NoteForm';
 import NoteList from '@/components/features/NoteList/NoteList';
+import Modal from '@/components/ui/Modal/Modal';
 import { fetchNotes } from '@/lib/api/notes';
 
 import css from './page.module.css';
@@ -14,6 +16,12 @@ import css from './page.module.css';
 export default function NotesPageClient() {
   const [searchText, setSearchText] = useState('');
   const [page, setPage] = useState(1);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   const handleSearch = useDebouncedCallback((e) => {
     setSearchText(e.target.value);
     setPage(1);
@@ -37,9 +45,16 @@ export default function NotesPageClient() {
           <Pagination pageCount={data?.totalPages ?? 0} currentPage={page} onChange={setPage} />
         )}
 
-        <button className={css.button}>Create note +</button>
+        <button className={css.button} onClick={openModal}>
+          Create note +
+        </button>
       </header>
       {isSuccess && data.notes.length > 0 && <NoteList data={data.notes} />}
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <NoteForm onClose={closeModal} />
+        </Modal>
+      )}
     </div>
   );
 }

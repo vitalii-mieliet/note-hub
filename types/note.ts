@@ -1,8 +1,15 @@
+import { TAG_OPTIONS } from '@/constants/notes';
+
+export type TagOption = (typeof TAG_OPTIONS)[number];
+export type Tag = TagOption['value'];
+
 export interface Note {
   id: string;
   title: string;
-  content: string;
+  content?: string;
   createdAt: string;
   updatedAt: string;
-  tag: string;
+  tag: Tag;
 }
+
+export type NoteFormData = Omit<Note, 'id' | 'createdAt' | 'updatedAt'>;
