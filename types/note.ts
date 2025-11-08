@@ -13,3 +13,4 @@ export interface Note {
 }
 
 export type NoteFormData = Omit<Note, 'id' | 'createdAt' | 'updatedAt'>;
+export type UpdateNoteData = { id: Note['id'] } & Partial<Omit<Note, 'id'>>;
