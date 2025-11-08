@@ -5,8 +5,7 @@ import { toast } from 'react-toastify';
 
 import { TAG_OPTIONS } from '@/constants/notes';
 import { createNote } from '@/lib/api/notes';
-import { noteFormSchema } from '@/schemas/note';
-import { NoteFormData } from '@/types/note';
+import { CreateNoteFormSchema, NewNoteData } from '@/schemas/note';
 
 import css from './NoteForm.module.css';
 
@@ -18,7 +17,7 @@ export default function NoteForm({ onClose }: Props) {
   const queryClient = useQueryClient();
 
   const addNote = useMutation({
-    mutationFn: (noteData: NoteFormData) => createNote(noteData),
+    mutationFn: (noteData: NewNoteData) => createNote(noteData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       toast.success('Note created successfully');
@@ -33,8 +32,8 @@ export default function NoteForm({ onClose }: Props) {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<NoteFormData>({
-    resolver: zodResolver(noteFormSchema),
+  } = useForm<NewNoteData>({
+    resolver: zodResolver(CreateNoteFormSchema),
     defaultValues: {
       title: '',
       content: '',
@@ -42,7 +41,7 @@ export default function NoteForm({ onClose }: Props) {
     },
   });
 
-  const onSubmit: SubmitHandler<NoteFormData> = (formData) => {
+  const onSubmit: SubmitHandler<NewNoteData> = (formData) => {
     addNote.mutate(formData);
     reset();
     onClose();

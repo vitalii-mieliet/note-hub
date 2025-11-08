@@ -5,3 +5,5 @@ export const TAG_OPTIONS = [
   { value: 'Meeting', label: 'Meeting' },
   { value: 'Shopping', label: 'Shopping' },
 ] as const;
+
+export const TAG_VALUES = TAG_OPTIONS.map(({ value }) => value) as string[];

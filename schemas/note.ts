@@ -1,11 +1,28 @@
 import * as z from 'zod';
 
-import { TAG_OPTIONS } from '@/constants/notes';
-import { Tag } from '@/types/note';
+import { TAG_VALUES } from '@/constants/notes';
 
-export const tagValues = TAG_OPTIONS.map(({ value }) => value);
+export const TagSchema = z
+  .string()
+  .refine((val) => TAG_VALUES.includes(val), { message: 'Invalid tag value' });
 
-export const noteFormSchema = z.object({
+export const TimeStampSchema = z.object({
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+export const NoteBaseSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  content: z.string().optional(),
+  tag: TagSchema,
+});
+
+export const NoteSchema = NoteBaseSchema.extend(TimeStampSchema.shape);
+
+export const NoteFormSchema = NoteBaseSchema.omit({
+  id: true,
+}).extend({
   title: z
     .string()
     .min(3, { message: 'Title must be at least 3 characters long' })
@@ -16,8 +33,13 @@ export const noteFormSchema = z.object({
     .string()
     .max(500, { message: 'Content must be at most 500 characters long' })
     .optional(),
-
-  tag: z.custom<Tag>((val) => tagValues.includes(val as Tag), {
-    message: 'Invalid tag value',
-  }),
 });
+
+export const CreateNoteFormSchema = NoteFormSchema;
+export const UpdateNoteFormSchema = NoteFormSchema.partial();
+
+export type Tag = z.infer<typeof TagSchema>;
+export type Note = z.infer<typeof NoteSchema>;
+export type NewNoteData = z.infer<typeof CreateNoteFormSchema>;
+export type UpdatedNoteFormData = z.infer<typeof UpdateNoteFormSchema>;
+export type UpdatedNoteData = { id: Note['id'] } & UpdatedNoteFormData;

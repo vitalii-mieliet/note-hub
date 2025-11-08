@@ -1,31 +1,19 @@
-import { Note, NoteFormData, UpdateNoteData } from '@/types/note';
+import { NewNoteData, Note, UpdatedNoteData } from '@/schemas/note';
+import { FetchNotesQuery, FetchNotesResponse } from '@/types/api';
 
 import { api } from '.';
 
-interface QueryParams {
-  search?: string;
-  tag?: string;
-  page?: number;
-  perPage?: number;
-  sortBy?: 'created' | 'updated';
-}
-
-interface NotesHttpResponse {
-  notes: Note[];
-  totalPages: number;
-}
-
-export const fetchNotes = async (params: QueryParams) => {
-  const res = await api.get<NotesHttpResponse>('/notes', { params });
+export const fetchNotes = async (params: FetchNotesQuery) => {
+  const res = await api.get<FetchNotesResponse>('/notes', { params });
   return res.data;
 };
 
-export const createNote = async (noteData: NoteFormData) => {
+export const createNote = async (noteData: NewNoteData) => {
   const res = await api.post<Note>(`/notes`, noteData);
   return res.data;
 };
 
-export const updateNote = async ({ id, ...noteData }: UpdateNoteData) => {
+export const updateNote = async ({ id, ...noteData }: UpdatedNoteData) => {
   const res = await api.patch<Note>(`/notes/${id}`, noteData);
   return res.data;
 };

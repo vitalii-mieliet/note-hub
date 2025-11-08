@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { deleteNote } from '@/lib/api/notes';
-import { Note } from '@/types/note';
+import { Note } from '@/schemas/note';
 
 import css from './NoteList.module.css';
 
