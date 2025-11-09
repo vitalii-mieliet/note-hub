@@ -1,10 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 
 import { TAG_OPTIONS } from '@/constants/notes';
-import { createNote } from '@/lib/api/notes';
+import { useNoteMutations } from '@/hooks/useNoteMutations';
 import { CreateNoteFormSchema, NewNoteData } from '@/schemas/note';
 
 import css from './NoteForm.module.css';
@@ -14,18 +12,7 @@ interface Props {
 }
 
 export default function NoteForm({ onClose }: Props) {
-  const queryClient = useQueryClient();
-
-  const addNote = useMutation({
-    mutationFn: (noteData: NewNoteData) => createNote(noteData),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
-      toast.success('Note created successfully');
-    },
-    onError: () => {
-      toast.error('Failed to create note. Please try again.');
-    },
-  });
+  const { create } = useNoteMutations();
 
   const {
     register,
@@ -42,7 +29,7 @@ export default function NoteForm({ onClose }: Props) {
   });
 
   const onSubmit: SubmitHandler<NewNoteData> = (formData) => {
-    addNote.mutate(formData);
+    create.mutate(formData);
     reset();
     onClose();
   };

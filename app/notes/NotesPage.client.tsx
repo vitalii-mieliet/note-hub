@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useDebouncedCallback } from 'use-debounce';
 
 import Pagination from '@/components/common/Pagination/Pagination';
@@ -9,7 +8,7 @@ import SearchBox from '@/components/common/SearchBox/SearchBox';
 import NoteForm from '@/components/features/NoteForm/NoteForm';
 import NoteList from '@/components/features/NoteList/NoteList';
 import Modal from '@/components/ui/Modal/Modal';
-import { fetchNotes } from '@/lib/api/notes';
+import { useNotesList } from '@/hooks/useNotesList';
 
 import css from './page.module.css';
 
@@ -27,11 +26,7 @@ export default function NotesPageClient() {
     setPage(1);
   }, 300);
 
-  const { data, isSuccess, isLoading, isError } = useQuery({
-    queryKey: ['notes', searchText, page],
-    queryFn: () => fetchNotes({ search: searchText, page, perPage: 12 }),
-    placeholderData: keepPreviousData,
-  });
+  const { data, isLoading, isError, isSuccess } = useNotesList({ search: searchText, page });
 
   if (isLoading) return <p>Loading notes...</p>;
   if (isError) return <p>Failed to load notes</p>;
@@ -41,7 +36,7 @@ export default function NotesPageClient() {
       <header className={css.toolbar}>
         <SearchBox defaultValue={searchText} onSearch={handleSearch} />
 
-        {isSuccess && data.totalPages > 1 && (
+        {isSuccess && data?.totalPages > 1 && (
           <Pagination pageCount={data?.totalPages ?? 0} currentPage={page} onChange={setPage} />
         )}
 
@@ -49,7 +44,7 @@ export default function NotesPageClient() {
           Create note +
         </button>
       </header>
-      {isSuccess && data.notes.length > 0 && <NoteList data={data.notes} />}
+      {isSuccess && data?.notes.length > 0 && <NoteList data={data.notes} />}
       {isModalOpen && (
         <Modal onClose={closeModal}>
           <NoteForm onClose={closeModal} />
