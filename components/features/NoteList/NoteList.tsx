@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { useNoteMutations } from '@/hooks/useNoteMutations';
 import { Note } from '@/schemas/note';
 
@@ -20,6 +22,10 @@ export default function NoteList({ data }: Props) {
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
             {/* додати посилання View details*/}
+            <Link href={`/notes/${note.id}`} className={css.link}>
+              View details
+            </Link>
+
             <button className={css.button} onClick={() => remove.mutate(note.id)}>
               Delete
             </button>

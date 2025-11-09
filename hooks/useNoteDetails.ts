@@ -5,8 +5,9 @@ import { Note } from '@/schemas/note';
 
 export const useNoteDetails = (id?: Note['id']) => {
   return useQuery<Note>({
-    queryKey: ['notes', 'detail', id],
+    queryKey: ['note', id],
     queryFn: () => getNote(id!),
+    refetchOnMount: false,
     enabled: !!id,
   });
 };
