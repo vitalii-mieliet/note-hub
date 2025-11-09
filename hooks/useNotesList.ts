@@ -11,5 +11,6 @@ export const useNotesList = (query?: FetchNotesQuery) => {
     queryKey: ['notes', finalQuery],
     queryFn: () => fetchNotes(finalQuery),
     placeholderData: keepPreviousData,
+    refetchOnMount: false,
   });
 };
