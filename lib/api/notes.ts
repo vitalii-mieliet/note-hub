@@ -8,6 +8,11 @@ export const fetchNotes = async (params: FetchNotesQuery) => {
   return res.data;
 };
 
+export const getNote = async (id: Note['id']) => {
+  const res = await api.get<Note>(`/notes/${id}`);
+  return res.data;
+};
+
 export const createNote = async (noteData: NewNoteData) => {
   const res = await api.post<Note>(`/notes`, noteData);
   return res.data;
