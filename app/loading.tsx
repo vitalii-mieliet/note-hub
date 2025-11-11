@@ -1,5 +1,5 @@
-import React from 'react';
+import Spinner from '@/components/common/Spinner/Spinner';
 
 export default function loading() {
-  return <p>Loading, please wait...</p>;
+  return <Spinner />;
 }
